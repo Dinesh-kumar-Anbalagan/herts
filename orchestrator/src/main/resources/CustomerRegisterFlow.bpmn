@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_17d9b7g" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="CustomerRegisterFlow" name="CustomerRegisterFlow" isExecutable="true" camunda:historyTimeToLive="P30D">
+    <bpmn:extensionElements />
+    <bpmn:startEvent id="Event_0l8zsd4">
+      <bpmn:outgoing>Flow_11j7x1c</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_11j7x1c" sourceRef="Event_0l8zsd4" targetRef="Activity_0wboj6e" />
+    <bpmn:serviceTask id="Activity_0co8qh9" name="Shipment Index Creation" camunda:class="com.herts.orchestrator.service.ServiceTask">
+      <bpmn:documentation>Task is to store a data related to the shipment in the elastic search.</bpmn:documentation>
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service">CustomerCreation</camunda:inputParameter>
+          <camunda:inputParameter name="input">${ctx.request}</camunda:inputParameter>
+          <camunda:outputParameter name="Output_0a1thnd">
+            <camunda:script scriptFormat="JavaScript">print("ctx.result : " +result);</camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0o7jvs4</bpmn:incoming>
+      <bpmn:outgoing>Flow_0nutd1y</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0o7jvs4" sourceRef="Activity_0wboj6e" targetRef="Activity_0co8qh9" />
+    <bpmn:scriptTask id="Activity_0wboj6e" name="Request creation" scriptFormat="JavaScript">
+      <bpmn:incoming>Flow_11j7x1c</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o7jvs4</bpmn:outgoing>
+      <bpmn:script>
+print("request : " +ctx.request);
+
+
+</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0nutd1y" sourceRef="Activity_0co8qh9" targetRef="Event_0m2oqub" />
+    <bpmn:endEvent id="Event_0m2oqub">
+      <bpmn:incoming>Flow_0nutd1y</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CustomerRegisterFlow">
+      <bpmndi:BPMNShape id="Event_0l8zsd4_di" bpmnElement="Event_0l8zsd4">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m1jjvw_di" bpmnElement="Activity_0co8qh9">
+        <dc:Bounds x="410" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13kkgit_di" bpmnElement="Activity_0wboj6e">
+        <dc:Bounds x="250" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0m2oqub_di" bpmnElement="Event_0m2oqub">
+        <dc:Bounds x="592" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_11j7x1c_di" bpmnElement="Flow_11j7x1c">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="250" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o7jvs4_di" bpmnElement="Flow_0o7jvs4">
+        <di:waypoint x="350" y="120" />
+        <di:waypoint x="410" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nutd1y_di" bpmnElement="Flow_0nutd1y">
+        <di:waypoint x="510" y="120" />
+        <di:waypoint x="592" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

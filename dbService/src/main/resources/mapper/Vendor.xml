@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Vendor">
+    <select id="getData" resultType="com.herts.model.Vendor">
+        SELECT * FROM herts_shipment.vendor;
+    </select>
+
+    <select id="findById" resultType="com.herts.model.Vendor">
+        SELECT * FROM herts_shipment.vendor where vendorId = #{vendorId};
+    </select>
+
+    <insert id="insert" parameterType="com.herts.model.Vendor" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO vendor ( vendorId, vendorName, phoneNumber, emailId,
+        LatestPickupTime, distCost, minCost, mindist)
+        VALUES ( #{vendorID},#{vendorName},#{phoneNumber},#{emailId},#{LatestPickupTime},#{distCost},
+        #{minCost},#{mindist}
+        );
+    </insert>
+
+    <update id="update" parameterType="com.herts.model.Vendor">
+        UPDATE vendor
+        SET value = CAST(#{input} AS jsonb)
+        WHERE vendorId = #{vendorId}
+    </update>
+
+</mapper>

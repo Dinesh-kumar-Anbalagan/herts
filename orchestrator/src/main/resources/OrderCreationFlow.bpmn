@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0bmrjkz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="OrderCreationFlow" name="OrderCreationFlow" isExecutable="true" camunda:historyTimeToLive="30">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1ilafo6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1ilafo6" sourceRef="StartEvent_1" targetRef="Activity_0wxzw8u" />
+    <bpmn:scriptTask id="Activity_0wxzw8u" scriptFormat="JavaScript">
+      <bpmn:incoming>Flow_1ilafo6</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mp4s2g</bpmn:outgoing>
+      <bpmn:script>print("request : " +ctx.request);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0mp4s2g" sourceRef="Activity_0wxzw8u" targetRef="Activity_1eyamed" />
+    <bpmn:serviceTask id="Activity_1eyamed" camunda:class="com.herts.orchestrator.service.ServiceTask">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service">OrderConfirmation</camunda:inputParameter>
+          <camunda:inputParameter name="input">${ctx.request}</camunda:inputParameter>
+          <camunda:outputParameter name="Output_3hckrgr">
+            <camunda:script scriptFormat="JavaScript">ctx.result = result;</camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0mp4s2g</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oxyc76</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0oxyc76" sourceRef="Activity_1eyamed" targetRef="Activity_0vhtwh1" />
+    <bpmn:serviceTask id="Activity_0vhtwh1" camunda:class="com.herts.orchestrator.service.ServiceTask">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service">ShipmentIndexCreation</camunda:inputParameter>
+          <camunda:inputParameter name="input">${ctx.result}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0oxyc76</bpmn:incoming>
+      <bpmn:outgoing>Flow_17559qw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1hqc2q1">
+      <bpmn:incoming>Flow_17559qw</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_17559qw" sourceRef="Activity_0vhtwh1" targetRef="Event_1hqc2q1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="OrderCreationFlow">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_143mqfc_di" bpmnElement="Activity_0wxzw8u">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jgkesn_di" bpmnElement="Activity_1eyamed">
+        <dc:Bounds x="430" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1khrgi2_di" bpmnElement="Activity_0vhtwh1">
+        <dc:Bounds x="590" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1hqc2q1_di" bpmnElement="Event_1hqc2q1">
+        <dc:Bounds x="752" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1ilafo6_di" bpmnElement="Flow_1ilafo6">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mp4s2g_di" bpmnElement="Flow_0mp4s2g">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="430" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oxyc76_di" bpmnElement="Flow_0oxyc76">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="590" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17559qw_di" bpmnElement="Flow_17559qw">
+        <di:waypoint x="690" y="120" />
+        <di:waypoint x="752" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

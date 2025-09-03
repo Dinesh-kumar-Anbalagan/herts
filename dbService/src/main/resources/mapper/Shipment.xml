@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Shipment">
+    <resultMap id="ShipmentResultMap" type="com.herts.model.Shipment">
+        <result property="shipmentId" column="shipment_id"/>
+        <result property="shipmentDate" column="shipment_date"/>
+        <result property="customerId" column="customerId"/>
+        <result property="trackingId" column="trackingId"/>
+        <result property="pickupNumber" column="pickupNumber"/>
+
+        <association property="sender" javaType="com.herts.model.Address">
+            <result property="address" column="sender_address"/>
+            <result property="country" column="sender_country"/>
+            <result property="locality" column="sender_locality"/>
+            <result property="postalCode" column="sender_postal_code"/>
+            <result property="county" column="sender_county"/>
+        </association>
+
+        <association property="receiver" javaType="com.herts.model.Address">
+            <result property="address" column="receiver_address"/>
+            <result property="country" column="receiver_country"/>
+            <result property="locality" column="receiver_locality"/>
+            <result property="postalCode" column="receiver_postal_code"/>
+            <result property="county" column="receiver_county"/>
+        </association>
+
+        <association property="handlingUnit" javaType="com.herts.model.HandlingUnit">
+            <result property="height" column="height"/>
+            <result property="length" column="length"/>
+            <result property="weight" column="weight"/>
+            <result property="stackable" column="stackable"/>
+            <result property="type" column="type"/>
+            <result property="units" column="units"/>
+            <result property="width" column="width"/>
+            <result property="size" column="size"/>
+        </association>
+    </resultMap>
+
+    <select id="findById" resultMap="ShipmentResultMap">
+        SELECT * FROM shipment WHERE shipment_id = #{shipmentId}
+    </select>
+
+    <insert id="insert" parameterType="com.herts.model.Shipment">
+        INSERT INTO shipment (
+        shipment_id, shipment_date,customerId,
+        sender_address, sender_country, sender_locality, sender_postal_code, sender_county,
+        receiver_address, receiver_country, receiver_locality, receiver_postal_code, receiver_county,
+        height, length,weight, stackable, type, units, width, size
+        ) VALUES (
+        #{shipmentId}, #{shipmentDate},#{customerId},
+        #{sender.address}, #{sender.country}, #{sender.locality}, #{sender.postalCode}, #{sender.county},
+        #{receiver.address}, #{receiver.country}, #{receiver.locality}, #{receiver.postalCode}, #{receiver.county},
+        #{handlingUnit.height}, #{handlingUnit.length},#{handlingUnit.weight}, #{handlingUnit.stackable}, #{handlingUnit.type},
+        #{handlingUnit.units}, #{handlingUnit.width}, #{handlingUnit.size}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.herts.model.Shipment">
+        UPDATE shipment
+        SET trackingId = #{trackingId} , pickupNumber = #{pickupNumber}
+        WHERE shipment_id = #{shipmentId}
+    </update>
+</mapper>

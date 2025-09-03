@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Offer">
+    <resultMap id="OfferResultMap" type="com.herts.model.Offer">
+        <id property="offerId" column="offer_id"/>
+        <result property="customerID" column="customer_id"/>
+        <result property="shipmentId" column="shipment_id"/>
+        <result property="offerDate" column="offer_date"/>
+        <result property="expriationDate" column="expiration_date"/>
+        <result property="vendorId" column="vendor_id"/>
+        <result property="vendorName" column="vendor_name"/>
+        <result property="vendorEmail" column="vendor_email"/>
+        <result property="offerCost" column="offer_cost"/>
+        <result property="hasInsurance" column="has_insurance"/>
+        <result property="status" column="status"/>
+        <result property="estimateDelivery" column="estimate_delivery"/>
+    </resultMap>
+
+    <!-- Select by Offer ID -->
+    <select id="findById" resultMap="OfferResultMap" parameterType="com.herts.model.Offer">
+        SELECT * FROM Offers WHERE offer_id = #{offerId}
+    </select>
+
+    <select id="getDataId" resultMap="OfferResultMap" parameterType="com.herts.model.Offer">
+        SELECT * FROM Offers WHERE shipment_id = #{shipmentId}
+    </select>
+
+    <!-- Insert Offer -->
+    <insert id="insert" parameterType="com.herts.model.Offer">
+        INSERT INTO herts_shipment.offers (
+        customer_id, shipment_id, offer_id, offer_date, expiration_date,
+        vendor_id, vendor_name, vendor_email, offer_cost, has_insurance,
+        status, estimate_delivery
+        ) VALUES (
+        #{customerID}, #{shipmentId}, #{offerId}, #{offerDate}, #{expriationDate},
+        #{vendorId}, #{vendorName}, #{vendorEmail}, #{offerCost}, #{hasInsurance},
+        #{status}, #{estimateDelivery}
+        )
+    </insert>
+
+    <!-- Update Offer -->
+    <update id="update" parameterType="com.herts.model.Offer">
+        UPDATE Offers SET
+        customer_id = #{customerID},
+        shipment_id = #{shipmentId},
+        offer_date = #{offerDate},
+        expiration_date = #{expriationDate},
+        vendor_id = #{vendorId},
+        vendor_name = #{vendorName},
+        vendor_email = #{vendorEmail},
+        offer_cost = #{offerCost},
+        has_insurance = #{hasInsurance},
+        status = #{status},
+        estimate_delivery = #{estimateDelivery}
+        WHERE offer_id = #{offerId}
+    </update>
+
+    <!-- Delete Offer -->
+    <delete id="delete" parameterType="com.herts.model.Offer">
+        DELETE FROM Offers WHERE offer_id != #{offerId} and shipment_Id = #{shipmentId};
+    </delete>
+
+
+</mapper>
