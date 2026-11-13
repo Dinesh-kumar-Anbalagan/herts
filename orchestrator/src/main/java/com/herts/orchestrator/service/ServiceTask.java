@@ -1,18 +1,14 @@
 package com.herts.orchestrator.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.herts.model.Context;
 import com.herts.model.InputOutputParams;
 import com.herts.orchestrator.bean.SpringContextBridge;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ServiceTask implements JavaDelegate {
-
     @Override
     public void execute(DelegateExecution execution) {
         ServiceBus serviceBus = SpringContextBridge.getBean(ServiceBus.class);
@@ -34,8 +30,6 @@ public class ServiceTask implements JavaDelegate {
 
         Object inputObj = execution.getVariable("input");
         InputOutputParams input;
-
-        System.out.println("All variables: " + execution.getVariables());
 
         if (inputObj instanceof InputOutputParams) {
             input = (InputOutputParams) inputObj;

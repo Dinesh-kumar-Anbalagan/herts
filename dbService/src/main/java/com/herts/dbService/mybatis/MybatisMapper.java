@@ -6,17 +6,14 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-
 import java.util.List;
-import java.util.Objects;
 
-
-@Component public class MybatisMapper {
-
+@Component
+public class MybatisMapper {
     private final SqlSession sqlSession;
 
-    @Autowired public MybatisMapper(SqlSession sqlSession) {
+    @Autowired
+    public MybatisMapper(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 
@@ -39,7 +36,6 @@ import java.util.Objects;
             }
             else if(method.equalsIgnoreCase( "insert")) {
             Configuration config = sqlSession.getConfiguration();
-            System.out.println("All mapped statements:");
             config.getMappedStatementNames().forEach(System.out::println);
             sqlSession.insert(filename, input);
             return input;
@@ -56,5 +52,5 @@ import java.util.Objects;
                 method.equals("findBYId");
                 throw new UnsupportedOperationException("Unsupported method: " + method);
             }
-        }
     }
+}

@@ -7,8 +7,6 @@ import com.herts.orchestrator.service.ServiceBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service("ShipmentIndexCreation")
 public class ShipmentIndexCreation implements AbstractService<InputOutputParams, InputOutputParams> {
     @Autowired
@@ -45,5 +43,4 @@ public class ShipmentIndexCreation implements AbstractService<InputOutputParams,
 
         return shipmentES;
     }
-
 }

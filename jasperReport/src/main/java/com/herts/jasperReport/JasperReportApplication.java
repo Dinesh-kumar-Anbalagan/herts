@@ -8,9 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages =  {"com.herts.orchestrator",
 		"com.herts.shipment"})
 public class JasperReportApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(JasperReportApplication.class, args);
 	}
-
 }

@@ -11,9 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.herts.dbService"
 })
 public class EsDataApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(EsDataApplication.class, args);
 	}
-
 }

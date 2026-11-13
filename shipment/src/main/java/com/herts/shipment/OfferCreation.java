@@ -2,7 +2,6 @@ package com.herts.shipment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.herts.model.*;
-import com.herts.orchestrator.exception.CustomizeException;
 import com.herts.orchestrator.service.AbstractService;
 import com.herts.orchestrator.service.ServiceBus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ public class OfferCreation implements AbstractService<InputOutputParams, InputOu
 
     @Override
     public InputOutputParams runProcess(Context ctx, InputOutputParams input) {
-
         ListValues listValues = new ListValues();
         Order order = new Order();
 
@@ -33,8 +31,6 @@ public class OfferCreation implements AbstractService<InputOutputParams, InputOu
 
         order.setOfferList(listValues.getOfferList());
         order.setShipment(shipment);
-
-        ctx.setMethod("insert");
 
         return order;
     }

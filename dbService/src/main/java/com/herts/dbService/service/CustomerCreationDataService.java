@@ -1,31 +1,25 @@
 package com.herts.dbService.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.herts.dbService.mybatis.MybatisMapper;
 import com.herts.model.Context;
 import com.herts.model.Customer;
 import com.herts.orchestrator.service.AbstractService;
 import com.herts.orchestrator.exception.CustomizeException;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Method;
 
 @Service("CustomerCreationDataService")
 public class CustomerCreationDataService implements AbstractService<Customer, Customer> {
-
     @Autowired
     private ApplicationContext context;
 
-
     @Override
     public Customer runProcess(Context ctx, Customer input) {
-       MybatisMapper mapper = (MybatisMapper) context.getBean("mybatisMapper");
+        MybatisMapper mapper = (MybatisMapper) context.getBean("mybatisMapper");
 
         String methodName =  ctx.getMethod();
-
         if(methodName.isBlank())
         {
             throw new CustomizeException("Method is not Specified");
@@ -37,7 +31,7 @@ public class CustomerCreationDataService implements AbstractService<Customer, Cu
             return cust;
         } catch (Exception e) {
             Throwable cause = e.getCause();
-            cause.printStackTrace(); // <- this will show the actual DB/MyBatis error
+            cause.printStackTrace();
             throw new CustomizeException("Error invoking method: " + cause.getMessage());
         }
     }
@@ -47,7 +41,7 @@ public class CustomerCreationDataService implements AbstractService<Customer, Cu
               Customer customer =  new Customer();
               customer.setMessage("Inserted");
               return customer;
-        }
+    }
 
     public Customer retrieve(Customer cust, MybatisMapper mapper) {
             Customer rescust = (Customer) mapper.runQuery("Customer", "findById", cust);

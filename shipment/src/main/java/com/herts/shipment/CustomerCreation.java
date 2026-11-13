@@ -6,12 +6,10 @@ import com.herts.orchestrator.service.AbstractService;
 import com.herts.orchestrator.service.ServiceBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 @Service("CustomerCreation")
 public class CustomerCreation implements AbstractService<InputOutputParams, InputOutputParams> {
-
     @Autowired
     ServiceBus serviceBus;
 
@@ -38,7 +36,5 @@ public class CustomerCreation implements AbstractService<InputOutputParams, Inpu
         {
             throw new RuntimeException("Customer Already Exists");
         }
-
     }
-
 }

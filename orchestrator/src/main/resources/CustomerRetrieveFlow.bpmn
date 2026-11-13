@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0aqcvee" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="CustomerRetrieveFlow" name="CustomerRetrieveFlow" isExecutable="true" camunda:historyTimeToLive="30">
+    <bpmn:startEvent id="StartEvent_1" name="START">
+      <bpmn:outgoing>Flow_1w4cv1y</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1w4cv1y" sourceRef="StartEvent_1" targetRef="Activity_1w76pv7" />
+    <bpmn:scriptTask id="Activity_1w76pv7" name="Request creation" scriptFormat="JavaScript">
+      <bpmn:incoming>Flow_1w4cv1y</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vdrvyh</bpmn:outgoing>
+      <bpmn:script>print("request : " +ctx.request);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_1vdrvyh" sourceRef="Activity_1w76pv7" targetRef="Activity_12v0d1q" />
+    <bpmn:serviceTask id="Activity_12v0d1q" name="CustomerFetch" camunda:class="com.herts.orchestrator.service.ServiceTask">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service">CustomerRetrieve</camunda:inputParameter>
+          <camunda:inputParameter name="input">${ctx.request}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1vdrvyh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0upa0xq</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1x7uyyw" name="END">
+      <bpmn:incoming>Flow_0upa0xq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0upa0xq" sourceRef="Activity_12v0d1q" targetRef="Event_1x7uyyw" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CustomerRetrieveFlow">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="183" y="145" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kbkhbb_di" bpmnElement="Activity_1w76pv7">
+        <dc:Bounds x="250" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1wmgd07_di" bpmnElement="Activity_12v0d1q">
+        <dc:Bounds x="390" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1x7uyyw_di" bpmnElement="Event_1x7uyyw">
+        <dc:Bounds x="532" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="538" y="145" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1w4cv1y_di" bpmnElement="Flow_1w4cv1y">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="250" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vdrvyh_di" bpmnElement="Flow_1vdrvyh">
+        <di:waypoint x="350" y="120" />
+        <di:waypoint x="390" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0upa0xq_di" bpmnElement="Flow_0upa0xq">
+        <di:waypoint x="490" y="120" />
+        <di:waypoint x="532" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

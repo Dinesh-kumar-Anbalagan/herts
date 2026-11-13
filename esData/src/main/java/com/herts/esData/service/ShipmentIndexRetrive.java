@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service("ShipmentIndexRetrive")
 public class ShipmentIndexRetrive implements AbstractService<InputOutputParams, InputOutputParams> {
-
     @Autowired
     ServiceBus serviceBus;
 

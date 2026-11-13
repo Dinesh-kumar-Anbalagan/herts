@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service("CustomerFetch")
 public class CustomerFetch implements AbstractService<InputOutputParams, InputOutputParams> {
-
     @Autowired
     ServiceBus serviceBus;
 

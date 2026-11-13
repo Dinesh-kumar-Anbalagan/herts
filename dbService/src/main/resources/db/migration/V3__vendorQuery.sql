@@ -22,4 +22,4 @@ INSERT INTO vendor (
 ('V007', 'The Veg Shed', '+44 20 8123 4567', 'orders@thevegshed.co.uk', '18:15',  '1.4', '48', '3'),
 ('V008', 'Growers Guild Birmingham', '+44 121 334 7788', 'contact@growersguildbham.co.uk', '19:00',  '1.6', '55', '4'),
 ('V009', 'NatureBox Nottingham', '+44 115 998 7766', 'hello@natureboxnotts.co.uk', '18:45',  '1.8', '60', '5'),
-('V010', 'PlantDrop Edinburgh', '+44 131 456 7890', 'orders@plantdropedin.co.uk', '17:30', '2.1', '58', '4');
+('V010', 'PlantDrop Edinburgh', '+44 131 456 7890', 'orders@plantdropedin.co.uk', '17:30', '2.1', '58', '4')ON CONFLICT (vendorId) DO NOTHING;

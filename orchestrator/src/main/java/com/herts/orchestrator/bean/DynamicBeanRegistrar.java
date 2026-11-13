@@ -16,7 +16,6 @@ public class DynamicBeanRegistrar {
         try {
             Class<?> clazz = Class.forName(className);
             context.registerBean(beanName, clazz);
-            System.out.println("Bean '" + beanName + "' registered for class: " + className);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

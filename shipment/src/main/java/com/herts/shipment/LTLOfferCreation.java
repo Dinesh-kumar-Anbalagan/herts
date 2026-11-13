@@ -9,16 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class LTLOfferCreation implements AbstractService<Shipment, InputOutputParams> {
-
     @Autowired
-
     ServiceBus serviceBus;
 
     @Autowired
@@ -41,6 +37,18 @@ public class LTLOfferCreation implements AbstractService<Shipment, InputOutputPa
         }
 
         ctx.setMethod("creation");
+
+        double distance;
+
+        try {
+            double[] originCords = distanceMatrixService.getCoordinates(input.getSender().getPostalCode());
+            double[] destCords = distanceMatrixService.getCoordinates(input.getReceiver().getPostalCode());
+
+            distance = distanceMatrixService.calculateDistanceKm(originCords, destCords);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         for(Vendor vendor: vendors) {
             Offer offer = new Offer();
 
@@ -48,18 +56,13 @@ public class LTLOfferCreation implements AbstractService<Shipment, InputOutputPa
             offer.setVendorName(vendor.getVendorName());
             offer.setVendorId(vendor.getVendorId());
             offer.setVendorEmail(vendor.getEmailId());
-
-            distanceMatrixService.estimateDeliveryDate
-                            (input.getSender().getPostalCode(),
-                              input.getReceiver().getPostalCode(),
-                              vendor,offer);
-
             offer.setOfferDate(LocalDate.now().toString());
             offer.setExpriationDate(LocalDate.now().plusDays(7).toString());
             offer.setStatus("Created");
             offer.setCustomerID(input.getCustomerId());
             offer.setShipmentId(input.getShipmentId());
 
+            this.estimateDeliveryDate(distance,vendor, offer);
             serviceBus.execute("OfferDataService", ctx, offer);
             offerList.add(offer);
         }
@@ -69,5 +72,14 @@ public class LTLOfferCreation implements AbstractService<Shipment, InputOutputPa
         offerLists.setOfferList(offerList);
 
         return offerLists;
+    }
+
+    public LocalDate estimateDeliveryDate(double distance, Vendor vendor, Offer offer)  {
+
+        int estimatedDays = Math.max(1, (int) Math.ceil(distance / vendor.getMindist()));
+
+        offer.setEstimateDelivery(String.valueOf(LocalDate.now().plusDays(estimatedDays)));
+        offer.setOfferCost((Math.round((distance* vendor.getDistCost()+(estimatedDays*vendor.getMinCost()))*0.04)*100.0)/100.0);
+        return LocalDate.now().plusDays(estimatedDays);
     }
 }

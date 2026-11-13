@@ -13,9 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.herts.jasperReport"
 })
 public class OrchestratorApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(OrchestratorApplication.class, args);
 	}
-
 }

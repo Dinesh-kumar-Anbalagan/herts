@@ -7,7 +7,7 @@
 	<parameter name="CustomerName" class="java.lang.String"/>
 	<parameter name="CustomerAddress" class="java.lang.String"/>
 	<parameter name="PickUpNumber" class="java.lang.String"/>
-	<parameter name="TrackingId" class="java.lang.Double"/>
+	<parameter name="TrackingId" class="java.lang.String"/>
 	<parameter name="Tax" class="java.lang.Double"/>
 	<parameter name="Total" class="java.lang.Double"/>
 	<field name="VendorName" class="java.lang.String"/>
@@ -105,7 +105,7 @@
 				<textElement>
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{TrackingId}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{TrackingId} == null ? "N/A" : $P{TrackingId}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -169,7 +169,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[F{Weight}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Weight}]]></textFieldExpression>
 			</textField>
 			<textField pattern="$###,##0.00">
 				<reportElement x="630" y="0" width="100" height="20" uuid="1e99e5f5-83d6-4b7a-95bb-1ec331f6b1be"/>

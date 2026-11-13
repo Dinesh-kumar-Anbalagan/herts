@@ -2,9 +2,6 @@ package com.herts.model;
 
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 @Data
 public class Shipment extends InputOutputParams{
     private Address sender;
@@ -15,4 +12,7 @@ public class Shipment extends InputOutputParams{
     private String customerId;
     private String trackingId;
     private String pickupNumber;
+    private String status;
+    private String currentStatus;
+
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0xqbiay" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <bpmn:process id="CustomerUpdateFlow" name="CustomerUpdateFlow" isExecutable="true" camunda:historyTimeToLive="30">
-    <bpmn:startEvent id="StartEvent_1">
+    <bpmn:startEvent id="StartEvent_1" name="START">
       <bpmn:outgoing>Flow_053isxx</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_053isxx" sourceRef="StartEvent_1" targetRef="Activity_1pl4jsh" />
-    <bpmn:scriptTask id="Activity_1pl4jsh" scriptFormat="JavaScript">
+    <bpmn:scriptTask id="Activity_1pl4jsh" name="Set required input for the service task" scriptFormat="JavaScript">
       <bpmn:incoming>Flow_053isxx</bpmn:incoming>
       <bpmn:outgoing>Flow_0ylyifb</bpmn:outgoing>
       <bpmn:script>print("request : " +ctx.request);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_0ylyifb" sourceRef="Activity_1pl4jsh" targetRef="Activity_0hob2oy" />
-    <bpmn:serviceTask id="Activity_0hob2oy" camunda:class="com.herts.orchestrator.service.ServiceTask">
+    <bpmn:serviceTask id="Activity_0hob2oy" name="Calling CustomerUpdate Service" camunda:class="com.herts.orchestrator.service.ServiceTask">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="input">${ctx.request}</camunda:inputParameter>
@@ -21,7 +21,7 @@
       <bpmn:incoming>Flow_0ylyifb</bpmn:incoming>
       <bpmn:outgoing>Flow_0077f90</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_065gcj6">
+    <bpmn:endEvent id="Event_065gcj6" name="END">
       <bpmn:incoming>Flow_0077f90</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0077f90" sourceRef="Activity_0hob2oy" targetRef="Event_065gcj6" />
@@ -30,15 +30,23 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CustomerUpdateFlow">
       <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
         <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="183" y="145" width="36" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0sk04ly_di" bpmnElement="Activity_1pl4jsh">
         <dc:Bounds x="270" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1o753fi_di" bpmnElement="Activity_0hob2oy">
         <dc:Bounds x="430" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_065gcj6_di" bpmnElement="Event_065gcj6">
         <dc:Bounds x="592" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="598" y="145" width="24" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_053isxx_di" bpmnElement="Flow_053isxx">
         <di:waypoint x="218" y="120" />

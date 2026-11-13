@@ -3,19 +3,16 @@ package com.herts.jasperReport;
 import com.herts.model.Address;
 import com.herts.model.Context;
 import com.herts.model.Customer;
-
 import com.herts.orchestrator.service.AbstractService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.*;
 
 @Service
 public class ReportService implements AbstractService<Address,String> {
-
     public byte[] generateReport() throws Exception {
         InputStream reportStream = getClass().getResourceAsStream("/demo.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
@@ -26,13 +23,10 @@ public class ReportService implements AbstractService<Address,String> {
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(List.of(customer));
 
-
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("createdBy", "Spring Boot App");
 
-
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
@@ -50,8 +44,5 @@ public class ReportService implements AbstractService<Address,String> {
         }
         return null;
     }
-
-
-
 }
 

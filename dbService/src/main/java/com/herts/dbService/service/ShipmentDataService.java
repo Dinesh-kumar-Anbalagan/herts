@@ -7,9 +7,7 @@ import com.herts.orchestrator.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Method;
-import java.util.List;
 
 @Service("ShipmentDataService")
 public class ShipmentDataService implements AbstractService<Shipment, InputOutputParams> {
@@ -47,14 +45,12 @@ public class ShipmentDataService implements AbstractService<Shipment, InputOutpu
     public Shipment insert (Shipment shipment, MybatisMapper mapper)
     {
         mapper.runQuery("Shipment", "insert", shipment);
-
         return null;
     }
 
     public Shipment update (Shipment shipment, MybatisMapper mapper)
     {
         mapper.runQuery("Shipment", "update", shipment);
-
         return null;
     }
 }

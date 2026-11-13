@@ -27,14 +27,20 @@
         <module name="jasperReport" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dbService (1)" target="17" />
+      <module name="orchestrator (1)" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="dbService" options="-parameters" />
+      <module name="dbService (1)" options="-parameters" />
       <module name="esData" options="-parameters" />
       <module name="jasperReport" options="-parameters" />
       <module name="model" options="-parameters" />
       <module name="orchestrator" options="-parameters" />
+      <module name="orchestrator (1)" options="-parameters" />
       <module name="shipment" options="-parameters" />
     </option>
   </component>

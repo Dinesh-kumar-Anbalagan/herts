@@ -1,25 +1,21 @@
 package com.herts.dbService.service;
 
 import com.herts.dbService.mybatis.MybatisMapper;
-
 import com.herts.model.*;
 import com.herts.orchestrator.exception.CustomizeException;
 import com.herts.orchestrator.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Method;
 
 @Service("ReportDataService")
 public class ReportDataService implements AbstractService<Report, InputOutputParams> {
-
     @Autowired
     private ApplicationContext context;
 
     @Override
     public Report runProcess(Context ctx, Report input) {
-
         MybatisMapper mapper = (MybatisMapper) context.getBean("mybatisMapper");
 
         String methodName =  ctx.getMethod();
@@ -35,7 +31,7 @@ public class ReportDataService implements AbstractService<Report, InputOutputPar
             return report;
         } catch (Exception e) {
             Throwable cause = e.getCause();
-            cause.printStackTrace(); // <- this will show the actual DB/MyBatis error
+            cause.printStackTrace();
             throw new CustomizeException("Error invoking method: " + cause.getMessage());
         }
     }

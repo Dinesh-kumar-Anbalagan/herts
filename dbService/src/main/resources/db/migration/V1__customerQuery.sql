@@ -16,24 +16,4 @@ CREATE TABLE IF NOT EXISTS Customer (
     county VARCHAR(100)
 );
 
-INSERT INTO Customer (
-    accountNumber, status, firstName, lastName, phoneNumber,
-    password, email, role,
-    address, country, postal_code, county
-) VALUES
-(
-    'ACC12345', 'Active', 'John', 'Doe', '1234567890',
-    'hashedpassword1', 'john.doe@example.com', 'USER',
-    '123 Main Street', 'USA', '90210', 'Los Angeles'
-),
-(
-    'ACC23456', 'Inactive', 'Jane', 'Smith', '9876543210',
-    'hashedpassword2', 'jane.smith@example.com', 'ADMIN',
-    '456 Queen St', 'Canada', 'M5V2B6', 'Toronto'
-),
-(
-    'ACC34567', 'Active', 'Alice', 'Brown', '5556667777',
-    'hashedpassword3', 'alice.brown@example.com', 'USER',
-    '789 Oxford Rd', 'UK', 'OX1 2JD', 'Oxford'
-);
 

@@ -17,7 +17,7 @@ public class PaymentCreation implements AbstractService<InputOutputParams, Input
 
         try {
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount((long) request.getAmount())
+                    .setAmount((long) request.getAmount() * 10)
                     .setCurrency(request.getCurrency())
                     .build();
 

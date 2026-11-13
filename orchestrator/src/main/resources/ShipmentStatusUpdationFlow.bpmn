@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08vf9ag" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="ShipmentStatusUpdationFlow" name="ShipmentStatusUpdationFlow" isExecutable="true" camunda:historyTimeToLive="30">
+    <bpmn:startEvent id="StartEvent_1" name="START">
+      <bpmn:outgoing>Flow_0am1k51</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0am1k51" sourceRef="StartEvent_1" targetRef="Activity_01ce96p" />
+    <bpmn:scriptTask id="Activity_01ce96p" name="Set required input for the service task" scriptFormat="JavaScript">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="result">${ctx.request}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0am1k51</bpmn:incoming>
+      <bpmn:outgoing>Flow_093uhnz</bpmn:outgoing>
+      <bpmn:script>print("request : " +ctx.request);
+
+var flow = ["Yet to Pay", "Created", "In_Transit", "Out For Delivery", "Delivered"];
+
+var currentStatus = ctx.request.currentStatus;
+var statusToChange = ctx.request.status;
+
+var index = flow.indexOf(currentStatus);
+
+var isValid = false;
+
+if (index !== -1 &amp;&amp; index &lt; flow.length - 1) {
+    if (flow[index + 1] === statusToChange) {
+        isValid = true;
+    }
+}
+if(!isValid){
+ctx.request.mesage ="Its in valid Transaction";
+}
+ctx.dotransaction = isValid;
+</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:serviceTask id="Activity_173qnft" name="call Java Service to update the Status in DB" camunda:class="com.herts.orchestrator.service.ServiceTask">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service">ShipmentStatusUpdate</camunda:inputParameter>
+          <camunda:inputParameter name="input">${ctx.request}</camunda:inputParameter>
+          <camunda:outputParameter name="Output_3aa7p0d">
+            <camunda:script scriptFormat="JavaScript">ctx.result = result;</camunda:script>
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_04dhcvv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0q7lxhx</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0q7lxhx" sourceRef="Activity_173qnft" targetRef="Activity_1gg0r7o" />
+    <bpmn:serviceTask id="Activity_1gg0r7o" name="Call Java Service to update the data in ES" camunda:class="com.herts.orchestrator.service.ServiceTask">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="service">ShipmentIndexCreation</camunda:inputParameter>
+          <camunda:inputParameter name="input">${ctx.result}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0q7lxhx</bpmn:incoming>
+      <bpmn:outgoing>Flow_0v0zr4c</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_01np4ql" name="END">
+      <bpmn:incoming>Flow_0v0zr4c</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0v0zr4c" sourceRef="Activity_1gg0r7o" targetRef="Event_01np4ql" />
+    <bpmn:exclusiveGateway id="Gateway_0ouwjpp" name="Is doable Transaction">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_093uhnz</bpmn:incoming>
+      <bpmn:outgoing>Flow_04dhcvv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1hr3fub</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_093uhnz" sourceRef="Activity_01ce96p" targetRef="Gateway_0ouwjpp" />
+    <bpmn:sequenceFlow id="Flow_04dhcvv" sourceRef="Gateway_0ouwjpp" targetRef="Activity_173qnft">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${ctx.dotransaction}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0h10avf" name="END">
+      <bpmn:incoming>Flow_1hr3fub</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1hr3fub" sourceRef="Gateway_0ouwjpp" targetRef="Event_0h10avf" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="ShipmentStatusUpdationFlow">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="155" y="145" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02wsxb8_di" bpmnElement="Activity_01ce96p">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ouwjpp_di" bpmnElement="Gateway_0ouwjpp" isMarkerVisible="true">
+        <dc:Bounds x="395" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="391" y="58" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_01np4ql_di" bpmnElement="Event_01np4ql">
+        <dc:Bounds x="882" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="888" y="145" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t2tjr1_di" bpmnElement="Activity_1gg0r7o">
+        <dc:Bounds x="710" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q4njgs_di" bpmnElement="Activity_173qnft">
+        <dc:Bounds x="550" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0h10avf_di" bpmnElement="Event_0h10avf">
+        <dc:Bounds x="402" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="408" y="275" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0am1k51_di" bpmnElement="Flow_0am1k51">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0q7lxhx_di" bpmnElement="Flow_0q7lxhx">
+        <di:waypoint x="600" y="160" />
+        <di:waypoint x="600" y="190" />
+        <di:waypoint x="760" y="190" />
+        <di:waypoint x="760" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v0zr4c_di" bpmnElement="Flow_0v0zr4c">
+        <di:waypoint x="810" y="120" />
+        <di:waypoint x="882" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="835" y="102" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_093uhnz_di" bpmnElement="Flow_093uhnz">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="395" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04dhcvv_di" bpmnElement="Flow_04dhcvv">
+        <di:waypoint x="445" y="120" />
+        <di:waypoint x="550" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hr3fub_di" bpmnElement="Flow_1hr3fub">
+        <di:waypoint x="420" y="145" />
+        <di:waypoint x="420" y="232" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

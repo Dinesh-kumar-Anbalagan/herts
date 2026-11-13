@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_161dyw0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <bpmn:process id="OfferCreationFlow" name="OfferCreationFlow" isExecutable="true" camunda:historyTimeToLive="30">
-    <bpmn:startEvent id="StartEvent_1">
+    <bpmn:startEvent id="StartEvent_1" name="START">
       <bpmn:outgoing>Flow_1yfooos</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1yfooos" sourceRef="StartEvent_1" targetRef="Activity_114ofw2" />
-    <bpmn:scriptTask id="Activity_114ofw2" scriptFormat="JavaScript">
+    <bpmn:scriptTask id="Activity_114ofw2" name="Set required input for the service task" scriptFormat="JavaScript">
       <bpmn:incoming>Flow_1yfooos</bpmn:incoming>
       <bpmn:outgoing>Flow_1edkfpx</bpmn:outgoing>
       <bpmn:script>print("request : " +ctx.request);</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:sequenceFlow id="Flow_1edkfpx" sourceRef="Activity_114ofw2" targetRef="Activity_0105puv" />
-    <bpmn:serviceTask id="Activity_0105puv" camunda:class="com.herts.orchestrator.service.ServiceTask">
+    <bpmn:serviceTask id="Activity_0105puv" name="Creating offer &#38; Storing in DB" camunda:class="com.herts.orchestrator.service.ServiceTask">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="service">OfferCreation</camunda:inputParameter>
@@ -21,7 +21,7 @@
       <bpmn:incoming>Flow_1edkfpx</bpmn:incoming>
       <bpmn:outgoing>Flow_0suglay</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="Event_1456fly">
+    <bpmn:endEvent id="Event_1456fly" name="END">
       <bpmn:incoming>Flow_0suglay</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0suglay" sourceRef="Activity_0105puv" targetRef="Event_1456fly" />
@@ -30,15 +30,23 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="OfferCreationFlow">
       <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
         <dc:Bounds x="182" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="183" y="145" width="36" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_17xwipu_di" bpmnElement="Activity_114ofw2">
         <dc:Bounds x="270" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0df7bgh_di" bpmnElement="Activity_0105puv">
         <dc:Bounds x="430" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1456fly_di" bpmnElement="Event_1456fly">
         <dc:Bounds x="592" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="598" y="145" width="24" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1yfooos_di" bpmnElement="Flow_1yfooos">
         <di:waypoint x="218" y="120" />

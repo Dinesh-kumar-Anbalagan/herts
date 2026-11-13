@@ -1,6 +1,5 @@
 package com.herts.orchestrator.service;
 
-
 import com.herts.model.Context;
 import com.herts.model.InputOutputParams;
 import com.herts.orchestrator.bean.DynamicBeanRegistrar;
@@ -9,11 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 @Service
 @ComponentScan
 public class ServiceBus {
-
     @Autowired
     private ApplicationContext context;
 
@@ -26,15 +23,10 @@ public class ServiceBus {
 
         AbstractService service = (AbstractService) context.getBean(serviceName);
 
-
-        System.out.println("Service Name : "+ serviceName + " Service : "+ service);
-
         if (service != null) {
           return (InputOutputParams) service.runProcess( ctx,request);
         } else {
             throw new IllegalArgumentException("Unknown service: " + serviceName);
         }
     }
-
-
 }

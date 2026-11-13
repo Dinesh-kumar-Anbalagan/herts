@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ConfigureElasticsearchClient {
-
     public static ElasticsearchClient createClient() {
         RestClient restClient = RestClient.builder(
                 new HttpHost("localhost", 9200)).build();

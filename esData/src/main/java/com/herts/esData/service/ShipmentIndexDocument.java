@@ -11,8 +11,6 @@ import com.herts.orchestrator.exception.CustomizeException;
 import com.herts.orchestrator.service.ServiceBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,31 +24,9 @@ public class ShipmentIndexDocument implements AbstractService<InputOutputParams,
 
     private static final String INDEX_NAME = "shipment";
 
-    public List<ShipmentES> getShipmentsByCustomerId(ShipmentES shipmentES) {
-        try {
-            SearchResponse<ShipmentES> searchResponse = client.search(s -> s
-                            .index(INDEX_NAME)
-                            .query(q -> q
-                                    .term(t -> t
-                                            .field("customerId.keyword")
-                                            .value(shipmentES.getCustomerId())
-                                    )
-                            ),
-                    ShipmentES.class
-            );
-
-            return searchResponse.hits().hits().stream()
-                    .map(Hit::source)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public ListValues runProcess (Context ctx, InputOutputParams input) {
         String methodName = ctx.getMethod();
-
         ObjectMapper mapper = new ObjectMapper();
         ShipmentES shipmentEs =  (ShipmentES) input;
 
@@ -67,20 +43,40 @@ public class ShipmentIndexDocument implements AbstractService<InputOutputParams,
         } catch (Exception ex) {
             throw new CustomizeException("Method not Found");
         }
+    }
 
-
+    public List<ShipmentES> getShipmentsByCustomerId(ShipmentES shipmentES) {
+        try {
+            SearchResponse<ShipmentES> searchResponse = client.search(s -> s
+                            .index(INDEX_NAME)
+                            .query(q -> q
+                                    .term(t -> t
+                                            .field("customerId.keyword")
+                                            .value(shipmentES.getCustomerId())
+                                    )
+                            ).sort(so -> so
+                               .field(f -> f
+                                    .field("shipDate")
+                                    .order(co.elastic.clients.elasticsearch._types.SortOrder.Desc)
+                             )
+                            ).size(10000),
+                    ShipmentES.class
+            );
+            return searchResponse.hits().hits().stream()
+                    .map(Hit::source)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<ShipmentES> creation(ShipmentES shipment) {
-        try
-        {
+        try {
             IndexResponse response = client.index(i -> i
                     .index(INDEX_NAME)
                     .id(String.valueOf(shipment.getShipmentId()))
                     .document(shipment)
             );
-
-            System.out.println("Status: " + response.result());
 
             return List.of(shipment);
         }

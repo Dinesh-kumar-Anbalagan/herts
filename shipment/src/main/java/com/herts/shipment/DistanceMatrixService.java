@@ -1,22 +1,17 @@
 package com.herts.shipment;
 
-import com.herts.model.Offer;
-import com.herts.model.Vendor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 
 @Service
 public class DistanceMatrixService {
-
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -52,21 +47,5 @@ public class DistanceMatrixService {
         return R * c;
     }
 
-    public LocalDate estimateDeliveryDate(String originPostcode, String destinationPostcode, Vendor vendor, Offer offer)  {
-      double distance;
 
-      try {
-          double[] originCords = this.getCoordinates(originPostcode);
-          double[] destCords = this.getCoordinates(destinationPostcode);
-
-          distance = calculateDistanceKm(originCords, destCords);
-      } catch (Exception e) {
-          throw new RuntimeException(e);
-      }
-        int estimatedDays = Math.max(1, (int) Math.ceil(distance / vendor.getMindist()));
-
-        offer.setEstimateDelivery(String.valueOf(LocalDate.now().plusDays(estimatedDays)));
-        offer.setOfferCost(distance* vendor.getDistCost()+(estimatedDays*vendor.getMinCost()));
-        return LocalDate.now().plusDays(estimatedDays);
-    }
-    }
+}

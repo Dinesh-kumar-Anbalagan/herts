@@ -6,14 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(CustomizeException.class)
     public ResponseEntity<?> handleResourceNotFound(CustomizeException ex, HttpServletRequest request) {
         Map<String, Object> body = new HashMap<>();
@@ -23,7 +21,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    private ResponseEntity<ApiErrorResponse> buildResponse(HttpStatus status, String error, String message, HttpServletRequest request) {
+    private ResponseEntity<ApiErrorResponse> buildResponse(HttpStatus status, String error, String message,
+                                                           HttpServletRequest request) {
         ApiErrorResponse response = new ApiErrorResponse(
                 LocalDateTime.now(),
                 status.value(),

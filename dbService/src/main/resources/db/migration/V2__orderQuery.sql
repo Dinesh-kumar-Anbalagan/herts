@@ -1,5 +1,0 @@
-CREATE TABLE If NOT EXISTS oorder(
-    id SERIAL PRIMARY KEY,
-    orderId VARCHAR(50),
-    Value JSONB
-);

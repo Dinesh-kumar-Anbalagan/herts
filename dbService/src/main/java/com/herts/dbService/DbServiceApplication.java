@@ -11,9 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 })
 @MapperScan("com.herts.dbService.mybatis")
 public class DbServiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(DbServiceApplication.class, args);
 	}
-
 }

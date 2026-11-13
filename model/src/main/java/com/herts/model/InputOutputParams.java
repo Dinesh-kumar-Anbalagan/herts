@@ -3,7 +3,6 @@ package com.herts.model;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;

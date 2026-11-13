@@ -2,9 +2,6 @@ package com.herts.model;
 
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 @Data
 public class Offer extends InputOutputParams {
     private String customerID;

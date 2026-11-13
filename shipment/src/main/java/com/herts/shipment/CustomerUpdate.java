@@ -7,11 +7,8 @@ import com.herts.orchestrator.service.ServiceBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service("CustomerUpdate")
 public class CustomerUpdate implements AbstractService<InputOutputParams, InputOutputParams> {
-
     @Autowired
     ServiceBus serviceBus;
 
@@ -26,5 +23,4 @@ public class CustomerUpdate implements AbstractService<InputOutputParams, InputO
 
         return customer;
     }
-
 }

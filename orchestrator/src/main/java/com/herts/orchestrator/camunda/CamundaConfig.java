@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class CamundaConfig {
-
     @Bean
     public ProcessEngine processEngine() {
-
         return ProcessEngineConfiguration
                 .createStandaloneProcessEngineConfiguration()
                 .setJdbcUrl("jdbc:postgresql://localhost:5432/UK_SHIPMENT?currentSchema=herts_shipment")
@@ -25,6 +23,6 @@ public class CamundaConfig {
 
     @PostConstruct
     public void init() {
-        System.out.println("✅ Camunda 7 Engine initialized with Spring Boot 3.");
+        System.out.println("Camunda 7 Engine initialized with Spring Boot 3.");
     }
 }

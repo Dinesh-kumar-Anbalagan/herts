@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 @Service("ReportFetch")
 public class ReportFetch implements AbstractService<InputOutputParams, InputOutputParams> {
-
     @Autowired
     ServiceBus serviceBus;
 
@@ -19,7 +18,6 @@ public class ReportFetch implements AbstractService<InputOutputParams, InputOutp
         Report report = mapper.convertValue(input.getData(), Report.class);
 
         ctx.setMethod("retrieve");
-
         report = (Report) serviceBus.execute("ReportDataService", ctx, report);
 
         ReportResponse reportResponse = new ReportResponse();
